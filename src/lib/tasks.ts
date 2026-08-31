@@ -14,7 +14,10 @@ export type ScreenKind =
   | "camera-video"
   | "camera-recording"
   | "camera-qr"
-  | "qr-link";
+  | "qr-link"
+  | "cab-home"
+  | "cab-destination"
+  | "cab-confirm";
 
 /** Highlight box in percent of the phone screen area. */
 export type Highlight = { x: number; y: number; w: number; h: number; shape?: "circle" | "rect" };
