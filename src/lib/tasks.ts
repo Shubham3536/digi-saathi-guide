@@ -91,7 +91,7 @@ export const TASKS: Task[] = [
     steps: [
       {
         screen: "wa-chat",
-        highlight: { x: 62, y: 84, w: 12, h: 8, shape: "circle" },
+        highlight: { x: 60, y: 87.5, w: 11, h: 5.5, shape: "circle" },
         caption: { en: "WhatsApp chat", hi: "WhatsApp चैट" },
         instruction: {
           en: "Open the WhatsApp chat of the person. Look near the message box. You will see a small paperclip icon. Tap it.",
@@ -104,7 +104,7 @@ export const TASKS: Task[] = [
       },
       {
         screen: "wa-attach",
-        highlight: { x: 8, y: 58, w: 26, h: 22 },
+        highlight: { x: 6, y: 61, w: 28, h: 12 },
         caption: { en: "Attach menu", hi: "अटैच मेन्यू" },
         instruction: {
           en: "A small menu opens. Tap on Gallery.",
@@ -198,7 +198,7 @@ export const TASKS: Task[] = [
     steps: [
       {
         screen: "wa-chat",
-        highlight: { x: 62, y: 84, w: 12, h: 8, shape: "circle" },
+        highlight: { x: 60, y: 87.5, w: 11, h: 5.5, shape: "circle" },
         caption: { en: "WhatsApp chat", hi: "WhatsApp चैट" },
         instruction: {
           en: "Open the WhatsApp chat of the person. Tap the small paperclip icon near the message box.",
@@ -211,7 +211,7 @@ export const TASKS: Task[] = [
       },
       {
         screen: "wa-attach",
-        highlight: { x: 38, y: 58, w: 26, h: 22 },
+        highlight: { x: 64, y: 61, w: 28, h: 12 },
         caption: { en: "Choose Location", hi: "Location चुनिए" },
         instruction: {
           en: "In the small menu, tap on Location.",
@@ -245,7 +245,7 @@ export const TASKS: Task[] = [
     steps: [
       {
         screen: "wa-chat",
-        highlight: { x: 62, y: 5, w: 14, h: 8, shape: "circle" },
+        highlight: { x: 64, y: 1.5, w: 12, h: 5, shape: "circle" },
         caption: { en: "Top of the chat", hi: "चैट के ऊपर" },
         instruction: {
           en: "Open the WhatsApp chat of the person you want to call. Look at the top of the screen.",
@@ -258,7 +258,7 @@ export const TASKS: Task[] = [
       },
       {
         screen: "wa-chat",
-        highlight: { x: 62, y: 5, w: 14, h: 8, shape: "circle" },
+        highlight: { x: 64, y: 1.5, w: 12, h: 5, shape: "circle" },
         caption: { en: "Video camera icon", hi: "वीडियो कैमरा निशान" },
         instruction: {
           en: "Tap the video camera icon at the top right.",
