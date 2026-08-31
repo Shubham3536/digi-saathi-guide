@@ -104,7 +104,7 @@ export const TASKS: Task[] = [
       },
       {
         screen: "wa-attach",
-        highlight: { x: 6, y: 61, w: 28, h: 12 },
+        highlight: { x: 6, y: 58.5, w: 28, h: 11 },
         caption: { en: "Attach menu", hi: "अटैच मेन्यू" },
         instruction: {
           en: "A small menu opens. Tap on Gallery.",
@@ -211,7 +211,7 @@ export const TASKS: Task[] = [
       },
       {
         screen: "wa-attach",
-        highlight: { x: 64, y: 61, w: 28, h: 12 },
+        highlight: { x: 66, y: 58.5, w: 26, h: 11 },
         caption: { en: "Choose Location", hi: "Location चुनिए" },
         instruction: {
           en: "In the small menu, tap on Location.",
