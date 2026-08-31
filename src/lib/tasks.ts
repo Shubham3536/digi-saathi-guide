@@ -91,7 +91,7 @@ export const TASKS: Task[] = [
     steps: [
       {
         screen: "wa-chat",
-        highlight: { x: 60, y: 87.5, w: 11, h: 5.5, shape: "circle" },
+        highlight: { x: 76, y: 90.5, w: 10, h: 5.5, shape: "circle" },
         caption: { en: "WhatsApp chat", hi: "WhatsApp चैट" },
         instruction: {
           en: "Open the WhatsApp chat of the person. Look near the message box. You will see a small paperclip icon. Tap it.",
@@ -198,7 +198,7 @@ export const TASKS: Task[] = [
     steps: [
       {
         screen: "wa-chat",
-        highlight: { x: 60, y: 87.5, w: 11, h: 5.5, shape: "circle" },
+        highlight: { x: 76, y: 90.5, w: 10, h: 5.5, shape: "circle" },
         caption: { en: "WhatsApp chat", hi: "WhatsApp चैट" },
         instruction: {
           en: "Open the WhatsApp chat of the person. Tap the small paperclip icon near the message box.",
