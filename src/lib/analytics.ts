@@ -20,10 +20,12 @@ export async function getSessionId(lang: Lang): Promise<string | null> {
   if (existing) return existing;
   if (pending) return pending;
   pending = (async () => {
-    const { data, error } = await supabase.from("sessions").insert({ language: lang }).select("id").single();
-    if (error || !data) return null;
-    window.sessionStorage.setItem(KEY, data.id);
-    return data.id as string;
+    const id = crypto.randomUUID();
+    // No .select(): these tables are insert-only, so nothing is read back.
+    const { error } = await supabase.from("sessions").insert({ id, language: lang });
+    if (error) return null;
+    window.sessionStorage.setItem(KEY, id);
+    return id;
   })();
   return pending;
 }
