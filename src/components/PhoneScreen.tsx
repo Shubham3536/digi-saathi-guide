@@ -167,7 +167,95 @@ function ScreenBody({ screen }: { screen: ScreenKind }) {
           </p>
         </div>
       );
+
+    case "cab-home":
+    case "cab-destination":
+    case "cab-confirm":
+      return <CabScreen screen={screen} />;
   }
+}
+
+function MapArt({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`bg-[#e8eee4] bg-[repeating-linear-gradient(45deg,#dfe9d8_0_12px,#eef4e9_12px_24px)] ${className}`}
+    />
+  );
+}
+
+function CabScreen({ screen }: { screen: ScreenKind }) {
+  return (
+    <div className="relative h-full w-full bg-white">
+      <div className="absolute inset-x-0 top-0 bg-neutral-900">
+        <StatusBar />
+      </div>
+
+      {screen === "cab-home" && (
+        <>
+          <MapArt className="absolute inset-x-0 top-[5%] h-[57%]" />
+          <p className="absolute left-1/2 top-[28%] -translate-x-1/2 text-2xl">📍</p>
+          <div className="absolute left-[30%] top-[5%] w-[40%] rounded-b-xl bg-neutral-900 py-1 text-center text-[10px] font-bold text-amber-300">
+            Ola / Uber
+          </div>
+          <div className="absolute inset-x-0 bottom-0 top-[58%] rounded-t-2xl bg-white p-3 shadow-[0_-4px_12px_rgba(0,0,0,0.12)]">
+            <div className="rounded-lg border border-neutral-200 px-2 py-2 text-[10px] text-neutral-800">
+              🟢 Pickup: Shanti Nagar, Gate 2
+            </div>
+            <div className="mt-2 rounded-lg bg-neutral-100 px-2 py-2 text-[10px] text-neutral-500">
+              🔍 Where to?
+            </div>
+            <div className="mt-3 space-y-2 text-[9px] text-neutral-600">
+              <p>🏥 City Hospital</p>
+              <p>🛒 Main Market</p>
+            </div>
+          </div>
+        </>
+      )}
+
+      {screen === "cab-destination" && (
+        <div className="h-full w-full bg-white pt-[5%]">
+          <div className="mx-3 mt-2 rounded-lg border-2 border-neutral-800 px-2 py-2 text-[10px] text-neutral-900">
+            🔍 City Hosp|
+          </div>
+          <div className="mt-3 space-y-3 px-3 text-[10px] text-neutral-800">
+            <p>📍 City Hospital, Ring Road</p>
+            <p>📍 City Hospital Gate 3</p>
+            <p>📍 City Medical Store</p>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 h-[34%] bg-neutral-200 p-2">
+            <div className="grid grid-cols-10 gap-[3px]">
+              {Array.from({ length: 30 }).map((_, i) => (
+                <span key={i} className="aspect-square rounded-[2px] bg-white" />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {screen === "cab-confirm" && (
+        <>
+          <MapArt className="absolute inset-x-0 top-[5%] h-[38%]" />
+          <p className="absolute left-1/2 top-[20%] -translate-x-1/2 text-2xl">🚕</p>
+          <div className="absolute inset-x-0 bottom-0 top-[42%] rounded-t-2xl bg-white p-3 shadow-[0_-4px_12px_rgba(0,0,0,0.12)]">
+            <div className="flex items-center gap-2 rounded-lg border-2 border-amber-400 bg-amber-50 px-2 py-2">
+              <span className="text-base">🚗</span>
+              <span className="flex-1 text-[10px] font-semibold text-neutral-900">Mini / UberGo</span>
+              <span className="text-[10px] font-bold text-neutral-900">₹149</span>
+            </div>
+            <div className="mt-2 flex items-center gap-2 rounded-lg border border-neutral-200 px-2 py-2">
+              <span className="text-base">🚙</span>
+              <span className="flex-1 text-[10px] text-neutral-800">Prime Sedan</span>
+              <span className="text-[10px] text-neutral-800">₹219</span>
+            </div>
+            <p className="mt-2 text-[9px] text-neutral-500">💵 Cash · 4 min away</p>
+            <div className="absolute inset-x-3 bottom-3 rounded-lg bg-neutral-900 py-2 text-center text-[11px] font-bold text-white">
+              Confirm Ride
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 function QrArt() {
