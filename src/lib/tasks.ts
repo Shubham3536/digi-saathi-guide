@@ -245,7 +245,7 @@ export const TASKS: Task[] = [
     steps: [
       {
         screen: "wa-chat",
-        highlight: { x: 64, y: 1.5, w: 12, h: 5, shape: "circle" },
+        highlight: { x: 79, y: 1, w: 10, h: 5, shape: "circle" },
         caption: { en: "Top of the chat", hi: "चैट के ऊपर" },
         instruction: {
           en: "Open the WhatsApp chat of the person you want to call. Look at the top of the screen.",
@@ -258,7 +258,7 @@ export const TASKS: Task[] = [
       },
       {
         screen: "wa-chat",
-        highlight: { x: 64, y: 1.5, w: 12, h: 5, shape: "circle" },
+        highlight: { x: 79, y: 1, w: 10, h: 5, shape: "circle" },
         caption: { en: "Video camera icon", hi: "वीडियो कैमरा निशान" },
         instruction: {
           en: "Tap the video camera icon at the top right.",
