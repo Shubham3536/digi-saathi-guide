@@ -14,7 +14,10 @@ export type ScreenKind =
   | "camera-video"
   | "camera-recording"
   | "camera-qr"
-  | "qr-link";
+  | "qr-link"
+  | "cab-home"
+  | "cab-destination"
+  | "cab-confirm";
 
 /** Highlight box in percent of the phone screen area. */
 export type Highlight = { x: number; y: number; w: number; h: number; shape?: "circle" | "rect" };
@@ -331,7 +334,94 @@ export const TASKS: Task[] = [
       },
     ],
   },
+  {
+    id: "book-cab",
+    emoji: "🚕",
+    title: { en: "Book a Cab (Ola / Uber)", hi: "कैब बुक करना (Ola / Uber)" },
+    keywords: [
+      "ola",
+      "uber",
+      "cab",
+      "taxi",
+      "book cab",
+      "book a taxi",
+      "कैब",
+      "टैक्सी",
+      "ओला",
+      "उबर",
+      "ride",
+      "gaadi book",
+    ],
+    steps: [
+      {
+        screen: "cab-home",
+        highlight: { x: 30, y: 5, w: 40, h: 10 },
+        caption: { en: "Open the Ola or Uber app", hi: "Ola या Uber ऐप खोलिए" },
+        instruction: {
+          en: "Open the Ola or Uber app on your phone. Wait a moment while it finds where you are.",
+          hi: "अपने फोन में Ola या Uber ऐप खोलिए। थोड़ा रुकिए, यह आपकी जगह ढूँढ़ लेगा।",
+        },
+        simple: {
+          en: "On your home screen find the small yellow square that says Ola, or the black square that says Uber. Touch it once and wait.",
+          hi: "अपनी होम स्क्रीन पर Ola लिखा पीला चौकोर निशान या Uber लिखा काला निशान ढूँढ़िए। उसे एक बार छूइए और रुकिए।",
+        },
+      },
+      {
+        screen: "cab-home",
+        highlight: { x: 6, y: 62, w: 88, h: 10 },
+        caption: { en: "Your pickup point", hi: "आपकी पिकअप जगह" },
+        instruction: {
+          en: "At the bottom you will see your pickup place. If it is correct, leave it as it is.",
+          hi: "नीचे आपकी पिकअप जगह दिखेगी। अगर वह सही है तो उसे वैसा ही रहने दीजिए।",
+        },
+        simple: {
+          en: "This line shows where the car will come to pick you up. If that is your house or street, nothing needs changing.",
+          hi: "यह लाइन बताती है कि गाड़ी आपको कहाँ से लेगी। अगर वह आपका घर या गली है, तो कुछ बदलने की ज़रूरत नहीं।",
+        },
+      },
+      {
+        screen: "cab-destination",
+        highlight: { x: 6, y: 16, w: 88, h: 10 },
+        caption: { en: "Type where you want to go", hi: "कहाँ जाना है, लिखिए" },
+        instruction: {
+          en: "Tap the box that says 'Where to?' and type your destination, like the hospital or market name.",
+          hi: "'Where to?' लिखे बॉक्स पर tap कीजिए और जहाँ जाना है वह नाम लिखिए, जैसे अस्पताल या बाज़ार का नाम।",
+        },
+        simple: {
+          en: "Touch the white box near the top. A keyboard comes up. Type a few letters of the place, then touch the matching name from the list below.",
+          hi: "ऊपर वाले सफेद बॉक्स को छूइए। कीबोर्ड आ जाएगा। जगह के कुछ अक्षर लिखिए, फिर नीचे की सूची में सही नाम को छू लीजिए।",
+        },
+      },
+      {
+        screen: "cab-confirm",
+        highlight: { x: 6, y: 44, w: 88, h: 13 },
+        caption: { en: "Choose the car", hi: "गाड़ी चुनिए" },
+        instruction: {
+          en: "The app shows car types with their price. Tap the one you want, for example Mini or UberGo.",
+          hi: "ऐप गाड़ियों के प्रकार और कीमत दिखाएगा। जो चाहिए उस पर tap कीजिए, जैसे Mini या UberGo।",
+        },
+        simple: {
+          en: "You will see two or three rows, each with a small car picture, a name and rupees. The smaller car costs less. Touch that row once.",
+          hi: "दो-तीन लाइनें दिखेंगी, हर एक में छोटी गाड़ी का चित्र, नाम और रुपये लिखे होंगे। छोटी गाड़ी सस्ती होती है। उस लाइन को एक बार छूइए।",
+        },
+      },
+      {
+        screen: "cab-confirm",
+        highlight: { x: 8, y: 84, w: 84, h: 9 },
+        caption: { en: "Confirm the ride", hi: "राइड पक्की कीजिए" },
+        instruction: {
+          en: "Now tap the big button at the bottom to book. The driver's name, car number and phone number will appear.",
+          hi: "अब नीचे के बड़े बटन पर tap करके बुक कीजिए। ड्राइवर का नाम, गाड़ी नंबर और फोन नंबर दिख जाएगा।",
+        },
+        simple: {
+          en: "The wide coloured button at the very bottom books the car. After touching it, wait. When the car arrives, match the number on your screen with the car before sitting inside.",
+          hi: "सबसे नीचे की चौड़ी रंगीन पट्टी गाड़ी बुक करती है। छूने के बाद इंतज़ार कीजिए। जब गाड़ी आए तो बैठने से पहले स्क्रीन का नंबर गाड़ी के नंबर से मिला लीजिए।",
+        },
+      },
+    ],
+  },
 ];
+
 
 export function findTask(id: string | null | undefined): Task | undefined {
   return TASKS.find((task) => task.id === id);
