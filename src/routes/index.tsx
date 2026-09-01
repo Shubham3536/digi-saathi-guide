@@ -185,11 +185,13 @@ function Home() {
               setNotice(t.micUnsupported[lang]);
               return;
             }
+            stopSpeaking();
             setNotice(null);
             start(
               (text, detected) => {
                 setQuestion(text);
                 if (detected !== lang) setLang(detected);
+                setNotice(t.heard[detected].replace("{text}", text));
                 void handleQuestion(text, "voice", detected);
               },
               (err) => {
@@ -236,7 +238,7 @@ function Home() {
         </form>
 
         {notice ? (
-          <p className="mt-4 rounded-2xl bg-accent p-4 text-xl text-accent-foreground">{notice}</p>
+          <p className="mt-4 rounded-2xl bg-accent p-4 text-xl text-accent-foreground" role="status" aria-live="polite">{notice}</p>
         ) : null}
 
         <h2 className="mt-12 text-3xl font-bold">{t.popular[lang]}</h2>

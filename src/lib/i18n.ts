@@ -17,6 +17,7 @@ export const t = {
   },
   talk: { en: "🎤 Talk to DigiSaathi", hi: "🎤 DigiSaathi से बात करें" },
   listening: { en: "Listening… speak in Hindi or English", hi: "सुन रहा हूँ… हिंदी या अंग्रेज़ी में बोलिए" },
+  heard: { en: "I heard: {text}", hi: "मैंने सुना: {text}" },
   speakingNow: { en: "DigiSaathi is speaking…", hi: "DigiSaathi बोल रहा है…" },
   tapAvatar: { en: "Tap me to hear my voice", hi: "मेरी आवाज़ सुनने के लिए मुझे tap कीजिए" },
   micDenied: {
