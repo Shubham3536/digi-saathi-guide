@@ -186,10 +186,22 @@ function Home() {
               return;
             }
             setNotice(null);
-            start((text) => {
-              setQuestion(text);
-              void handleQuestion(text, "voice");
-            });
+            start(
+              (text, detected) => {
+                setQuestion(text);
+                if (detected !== lang) setLang(detected);
+                void handleQuestion(text, "voice", detected);
+              },
+              (err) => {
+                setNotice(
+                  err === "denied"
+                    ? t.micDenied[lang]
+                    : err === "unsupported"
+                      ? t.micUnsupported[lang]
+                      : t.micNoSpeech[lang],
+                );
+              },
+            );
           }}
           disabled={busy}
           className="mt-8 w-full rounded-3xl bg-primary px-6 py-8 text-3xl font-extrabold text-primary-foreground shadow-[var(--shadow-card)] transition hover:opacity-90 disabled:opacity-60"
