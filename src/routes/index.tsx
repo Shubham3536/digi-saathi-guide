@@ -171,19 +171,8 @@ function Home() {
       </header>
 
       <section className="mx-auto max-w-4xl px-4">
-        <div className="flex flex-col items-center gap-6 rounded-3xl bg-card p-6 shadow-[var(--shadow-card)] sm:flex-row sm:p-8">
-          <img
-            src={avatarImg}
-            alt="DigiSaathi, your friendly guide"
-            width={768}
-            height={768}
-            className="h-32 w-32 shrink-0 rounded-full bg-accent object-cover sm:h-40 sm:w-40"
-          />
-          <div className="text-center sm:text-left">
-            <p className="text-2xl font-bold sm:text-3xl">{t.avatarHello[lang]}</p>
-            <p className="mt-2 text-xl leading-relaxed text-muted-foreground">{t.avatarMsg[lang]}</p>
-          </div>
-        </div>
+        <AvatarCompanion lang={lang} listening={listening} thinking={busy} />
+
 
         <h1 className="mt-10 text-center text-4xl font-extrabold leading-tight sm:text-5xl">{t.heading[lang]}</h1>
         <p className="mx-auto mt-4 max-w-2xl text-center text-xl leading-relaxed text-muted-foreground">
