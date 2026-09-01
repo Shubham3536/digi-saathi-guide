@@ -53,30 +53,48 @@ export function useSpeechRecognition(lang: Lang) {
       }
       cancelledRef.current = false;
 
+      // Hindi first is intentional on Indian devices. The Hindi recognizer also
+      // handles common English app names (WhatsApp, Ola, Uber), while an English
+      // recognizer often turns a Hindi sentence into unrelated Latin text.
+      const firstLocale = lang === "hi" ? localeFor(lang) : "hi-IN";
+
       const runOnce = (locale: string, isRetry: boolean) => {
         const rec = new Ctor();
         recRef.current = rec;
         rec.lang = locale;
-        rec.interimResults = false;
-        rec.maxAlternatives = 3;
+        rec.interimResults = true;
+        rec.maxAlternatives = 5;
         rec.continuous = false;
 
         let got = false;
+        let bestText = "";
 
         rec.onresult = (event: any) => {
-          const alts = event.results?.[0];
-          let text = "";
-          for (let i = 0; i < (alts?.length ?? 0); i += 1) {
-            const candidate = alts[i]?.transcript?.trim();
-            if (candidate) {
-              text = candidate;
-              break;
+          const candidates: string[] = [];
+          for (let resultIndex = event.resultIndex ?? 0; resultIndex < (event.results?.length ?? 0); resultIndex += 1) {
+            const alternatives = event.results[resultIndex];
+            for (let alternativeIndex = 0; alternativeIndex < (alternatives?.length ?? 0); alternativeIndex += 1) {
+              const candidate = alternatives[alternativeIndex]?.transcript?.trim();
+              if (candidate) candidates.push(candidate);
             }
           }
+
+          // Prefer a Devanagari alternative whenever the browser supplies one.
+          // Otherwise use its highest-ranked transcription.
+          const text = candidates.find(hasDevanagari) ?? candidates[0] ?? "";
           if (!text) return;
+          bestText = text;
+
+          const finalResult = Array.from(event.results ?? []).some((result: any) => result.isFinal);
+          if (!finalResult) return;
           got = true;
           setListening(false);
           onResult(text, hasDevanagari(text) ? "hi" : locale.startsWith("hi") ? "hi" : "en");
+          try {
+            rec.stop();
+          } catch {
+            /* recognition already ended */
+          }
         };
 
         rec.onerror = (event: any) => {
@@ -89,9 +107,15 @@ export function useSpeechRecognition(lang: Lang) {
 
         rec.onend = () => {
           if (got || cancelledRef.current) return;
+          if (bestText) {
+            got = true;
+            setListening(false);
+            onResult(bestText, hasDevanagari(bestText) ? "hi" : locale.startsWith("hi") ? "hi" : "en");
+            return;
+          }
           if (!isRetry) {
             // nothing understood — try the other language
-            runOnce(otherLocale(lang), true);
+            runOnce(locale === "hi-IN" ? "en-IN" : otherLocale(lang), true);
             return;
           }
           setListening(false);
@@ -107,7 +131,7 @@ export function useSpeechRecognition(lang: Lang) {
       };
 
       setListening(true);
-      runOnce(localeFor(lang), false);
+      runOnce(firstLocale, false);
     },
     [lang],
   );

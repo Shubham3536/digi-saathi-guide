@@ -29,7 +29,8 @@ Rules:
 
 If the request clearly matches one of these known guided tasks, return its id in "taskId":
 screenshot (take a screenshot), wa-photo (send a photo on WhatsApp), record-video (record a video),
-share-location (share location on WhatsApp), wa-video-call (WhatsApp video call), scan-qr (scan a QR code).
+share-location (share location on WhatsApp), wa-video-call (WhatsApp video call), scan-qr (scan a QR code),
+book-cab (book an Ola, Uber, cab or taxi).
 Otherwise set "taskId" to null and write the steps yourself.
 
 Reply ONLY with JSON of this shape:
@@ -42,7 +43,7 @@ export const askDigiSaathi = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<AskResult> => {
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) {
-      return { taskId: null, intro: "", steps: [], error: "missing_key" };
+      return { taskId: null, intro: "", steps: [], error: "AI is not configured yet." };
     }
 
     const language = data.lang === "hi" ? "Hindi (Devanagari script)" : "simple English";
@@ -51,7 +52,8 @@ export const askDigiSaathi = createServerFn({ method: "POST" })
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        "Lovable-API-Key": apiKey,
+        "X-Lovable-AIG-SDK": "fetch",
       },
       body: JSON.stringify({
         model: "google/gemini-3.7-flash",
@@ -71,7 +73,7 @@ export const askDigiSaathi = createServerFn({ method: "POST" })
         taskId: null,
         intro: "",
         steps: [],
-        error: status === 429 ? "rate_limited" : status === 402 ? "no_credits" : "gateway_error",
+        error: message || `AI request failed (${status}).`,
       };
     }
 
