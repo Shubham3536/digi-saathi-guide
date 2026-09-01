@@ -16,7 +16,17 @@ export const t = {
     hi: "गलती होने की चिंता मत कीजिए। हम इसे एक-एक कदम करके साथ में करेंगे।",
   },
   talk: { en: "🎤 Talk to DigiSaathi", hi: "🎤 DigiSaathi से बात करें" },
-  listening: { en: "Listening…", hi: "सुन रहा हूँ…" },
+  listening: { en: "Listening… speak in Hindi or English", hi: "सुन रहा हूँ… हिंदी या अंग्रेज़ी में बोलिए" },
+  speakingNow: { en: "DigiSaathi is speaking…", hi: "DigiSaathi बोल रहा है…" },
+  tapAvatar: { en: "Tap me to hear my voice", hi: "मेरी आवाज़ सुनने के लिए मुझे tap कीजिए" },
+  micDenied: {
+    en: "The microphone is blocked. Please allow microphone access in your browser and try again.",
+    hi: "माइक बंद है। कृपया browser में माइक की अनुमति दें और दोबारा कोशिश करें।",
+  },
+  micNoSpeech: {
+    en: "I could not hear you clearly. Please tap the big button and speak again — Hindi is fine too.",
+    hi: "मैं ठीक से सुन नहीं पाया। बड़ा बटन दबाकर दोबारा बोलिए — हिंदी में भी बोल सकते हैं।",
+  },
   thinking: { en: "One moment, I am thinking…", hi: "एक पल, मैं सोच रहा हूँ…" },
   micUnsupported: {
     en: "Your browser does not support the microphone. Please type your question instead.",

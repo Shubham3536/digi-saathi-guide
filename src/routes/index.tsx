@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 
-import avatarImg from "@/assets/digisaathi-avatar.png";
+import { AvatarCompanion } from "@/components/AvatarCompanion";
 import { t, type Lang } from "@/lib/i18n";
 import { TASKS, findTask, matchTask, type Task } from "@/lib/tasks";
 import { GuideView, type Guide } from "@/components/GuideView";
@@ -64,50 +64,50 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function startTask(task: Task, mode: "tap" | "voice" | "typing") {
+  function startTask(task: Task, mode: "tap" | "voice" | "typing", useLang: Lang = lang) {
     stopSpeaking();
     setNotice(null);
-    void track("task_selected", lang, { taskId: task.id, inputMode: mode });
-    void track("task_started", lang, { taskId: task.id, inputMode: mode });
-    setGuide(guideFromTask(task, lang));
+    void track("task_selected", useLang, { taskId: task.id, inputMode: mode });
+    void track("task_started", useLang, { taskId: task.id, inputMode: mode });
+    setGuide(guideFromTask(task, useLang));
     setView("guide");
   }
 
-  async function handleQuestion(text: string, mode: "voice" | "typing") {
+  async function handleQuestion(text: string, mode: "voice" | "typing", useLang: Lang = lang) {
     const trimmed = text.trim();
     if (!trimmed) return;
     setNotice(null);
-    void track("ai_question", lang, { inputMode: mode, detail: trimmed.slice(0, 200) });
+    void track("ai_question", useLang, { inputMode: mode, detail: trimmed.slice(0, 200) });
 
     const local = matchTask(trimmed);
     if (local) {
-      startTask(local, mode);
+      startTask(local, mode, useLang);
       return;
     }
 
     setBusy(true);
-    speak(t.thinking[lang], lang);
+    speak(t.thinking[useLang], useLang);
     try {
-      const result = await ask({ data: { question: trimmed, lang } });
+      const result = await ask({ data: { question: trimmed, lang: useLang } });
       if (result.error || (!result.steps.length && !result.taskId)) {
-        setNotice(t.errorMsg[lang]);
+        setNotice(t.errorMsg[useLang]);
         return;
       }
       const known = findTask(result.taskId);
       if (known) {
-        startTask(known, mode);
+        startTask(known, mode, useLang);
         return;
       }
-      void track("task_started", lang, { taskId: null, inputMode: mode });
+      void track("task_started", useLang, { taskId: null, inputMode: mode });
       setGuide({
         taskId: null,
         title: trimmed,
-        intro: result.intro || t.notSure[lang],
+        intro: result.intro || t.notSure[useLang],
         steps: result.steps,
       });
       setView("guide");
     } catch {
-      setNotice(t.errorMsg[lang]);
+      setNotice(t.errorMsg[useLang]);
     } finally {
       setBusy(false);
     }
@@ -171,19 +171,8 @@ function Home() {
       </header>
 
       <section className="mx-auto max-w-4xl px-4">
-        <div className="flex flex-col items-center gap-6 rounded-3xl bg-card p-6 shadow-[var(--shadow-card)] sm:flex-row sm:p-8">
-          <img
-            src={avatarImg}
-            alt="DigiSaathi, your friendly guide"
-            width={768}
-            height={768}
-            className="h-32 w-32 shrink-0 rounded-full bg-accent object-cover sm:h-40 sm:w-40"
-          />
-          <div className="text-center sm:text-left">
-            <p className="text-2xl font-bold sm:text-3xl">{t.avatarHello[lang]}</p>
-            <p className="mt-2 text-xl leading-relaxed text-muted-foreground">{t.avatarMsg[lang]}</p>
-          </div>
-        </div>
+        <AvatarCompanion lang={lang} listening={listening} thinking={busy} />
+
 
         <h1 className="mt-10 text-center text-4xl font-extrabold leading-tight sm:text-5xl">{t.heading[lang]}</h1>
         <p className="mx-auto mt-4 max-w-2xl text-center text-xl leading-relaxed text-muted-foreground">
@@ -197,10 +186,22 @@ function Home() {
               return;
             }
             setNotice(null);
-            start((text) => {
-              setQuestion(text);
-              void handleQuestion(text, "voice");
-            });
+            start(
+              (text, detected) => {
+                setQuestion(text);
+                if (detected !== lang) setLang(detected);
+                void handleQuestion(text, "voice", detected);
+              },
+              (err) => {
+                setNotice(
+                  err === "denied"
+                    ? t.micDenied[lang]
+                    : err === "unsupported"
+                      ? t.micUnsupported[lang]
+                      : t.micNoSpeech[lang],
+                );
+              },
+            );
           }}
           disabled={busy}
           className="mt-8 w-full rounded-3xl bg-primary px-6 py-8 text-3xl font-extrabold text-primary-foreground shadow-[var(--shadow-card)] transition hover:opacity-90 disabled:opacity-60"
