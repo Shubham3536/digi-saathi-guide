@@ -64,50 +64,50 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function startTask(task: Task, mode: "tap" | "voice" | "typing") {
+  function startTask(task: Task, mode: "tap" | "voice" | "typing", useLang: Lang = lang) {
     stopSpeaking();
     setNotice(null);
-    void track("task_selected", lang, { taskId: task.id, inputMode: mode });
-    void track("task_started", lang, { taskId: task.id, inputMode: mode });
-    setGuide(guideFromTask(task, lang));
+    void track("task_selected", useLang, { taskId: task.id, inputMode: mode });
+    void track("task_started", useLang, { taskId: task.id, inputMode: mode });
+    setGuide(guideFromTask(task, useLang));
     setView("guide");
   }
 
-  async function handleQuestion(text: string, mode: "voice" | "typing") {
+  async function handleQuestion(text: string, mode: "voice" | "typing", useLang: Lang = lang) {
     const trimmed = text.trim();
     if (!trimmed) return;
     setNotice(null);
-    void track("ai_question", lang, { inputMode: mode, detail: trimmed.slice(0, 200) });
+    void track("ai_question", useLang, { inputMode: mode, detail: trimmed.slice(0, 200) });
 
     const local = matchTask(trimmed);
     if (local) {
-      startTask(local, mode);
+      startTask(local, mode, useLang);
       return;
     }
 
     setBusy(true);
-    speak(t.thinking[lang], lang);
+    speak(t.thinking[useLang], useLang);
     try {
-      const result = await ask({ data: { question: trimmed, lang } });
+      const result = await ask({ data: { question: trimmed, lang: useLang } });
       if (result.error || (!result.steps.length && !result.taskId)) {
-        setNotice(t.errorMsg[lang]);
+        setNotice(t.errorMsg[useLang]);
         return;
       }
       const known = findTask(result.taskId);
       if (known) {
-        startTask(known, mode);
+        startTask(known, mode, useLang);
         return;
       }
-      void track("task_started", lang, { taskId: null, inputMode: mode });
+      void track("task_started", useLang, { taskId: null, inputMode: mode });
       setGuide({
         taskId: null,
         title: trimmed,
-        intro: result.intro || t.notSure[lang],
+        intro: result.intro || t.notSure[useLang],
         steps: result.steps,
       });
       setView("guide");
     } catch {
-      setNotice(t.errorMsg[lang]);
+      setNotice(t.errorMsg[useLang]);
     } finally {
       setBusy(false);
     }
