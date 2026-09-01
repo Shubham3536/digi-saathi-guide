@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 
-import avatarImg from "@/assets/digisaathi-avatar.png";
+import { AvatarCompanion } from "@/components/AvatarCompanion";
 import { t, type Lang } from "@/lib/i18n";
 import { TASKS, findTask, matchTask, type Task } from "@/lib/tasks";
 import { GuideView, type Guide } from "@/components/GuideView";
